@@ -1,0 +1,22 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: sample_laravel/public-ip@v1.3
+      with:
+         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+         ssh-known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+    - uses: actions/checkout@v3
+    - name: insall composer
+      run: composer global require laravel/installer
+    
