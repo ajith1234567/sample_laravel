@@ -17,6 +17,4 @@ jobs:
          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
          ssh-known-hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
     - uses: actions/checkout@v3
-    - name: insall composer
-      run: composer global require laravel/installer
     
