@@ -1,0 +1,41 @@
+name: Deploy Laravel App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Install PHP and Composer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y php-cli php-mbstring php-xml php-zip composer
+          sudo apt-get install nginx
+          
+      - name: Install dependencies
+        run: composer install
+        
+      - name: Configure environment
+        run: cp .env.example .env && php artisan key:generate
+      
+      - name: Deploy code to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          password: ${{ secrets.EC2_USER_PASSWORD }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          port: ${{ secrets.EC2_PORT }}
+          script: |
+     
+            cd /opt/laravel
+            git pull
+            php artisan cache:clear
+            php artisan config:clear
