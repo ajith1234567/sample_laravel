@@ -12,8 +12,8 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Deploy to my EC2 instance
-        uses: sample_laravel/ssh-deploy@v2.1.5
-        env:
+        uses: laravel/ssh@v2.1.5
+        with: 
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           SOURCE: "./"
           REMOTE_HOST: "ubuntu-3.108.193.205.ap-south-1.compute.amazonaws.com"
